@@ -23,10 +23,11 @@ public class ConsumerMethodsUtil {
     /**
      * 公共多线程调用方法
      *
-     * @param list
-     * @param methodName
+     * @param size 数组大小
+     * @param methodName 方法名称
+     * @param parameters 参数
      */
-    public void invokeConsumerMethod(List list, String methodName, Object[] parameters) {
+    public void invokeConsumerMethod(int size, String methodName, Object[] parameters) {
         // 获取消费者
         ThreadConsumerUtil threadConsumerUtil = SpringUtils.getBean(ThreadConsumerUtil.class);
 
@@ -46,7 +47,7 @@ public class ConsumerMethodsUtil {
         // 检测不能为空
         Assert.notNull(invokeMethod, "多线程调用方法不能不为空!");
         // 开始测试
-        threadConsumerUtil.consumer(list.size(), invokeMethod, parameters);
+        threadConsumerUtil.consumer(size, invokeMethod, parameters);
     }
 
     /**
@@ -67,5 +68,29 @@ public class ConsumerMethodsUtil {
 
         // 保存到数据库
         dao.save(person);
+    }
+
+
+    /**
+     * 单线程测试
+     */
+    public void singleUUIDList(List<String> uuidList) {
+        // 开始时间
+        long startTime = System.currentTimeMillis();
+        // 获取服务
+        PersonDAO dao = SpringUtils.getBean(PersonDAO.class);
+        // 遍历添加
+        for (String temp : uuidList) {
+            // 新增一个person对象 从uuidList中获取数据
+            Person person = new Person();
+            person.setName(temp);
+            person.setC_name(Thread.currentThread().getName());
+            // 保存到数据库
+            dao.save(person);
+        }
+        // 结束时间
+        long endTime = System.currentTimeMillis();
+
+        System.out.println(String.format("test2总耗时:%d", (endTime - startTime)));
     }
 }

@@ -23,13 +23,13 @@ public class MultiThreadApplication {
         for (int i = 0; i < 1000; i++) {
             uuidList.add(UUID.randomUUID().toString());
         }
-        // 根据参数查询方法
-//        Class[] clszz = {List.class, AtomicInteger.class};
 
         // 参数值
         Object[] parameters = {uuidList, new AtomicInteger(0)};
         // 开始测试
-        consumerMethodsUtil.invokeConsumerMethod(uuidList, "consumerUUIDList", parameters);
-//        consumerTestUtil.test2(uuidList, personDAO);
+        consumerMethodsUtil.invokeConsumerMethod(uuidList.size(), "consumerUUIDList", parameters);
+
+        // 单线程测试
+        consumerMethodsUtil.singleUUIDList(uuidList);
     }
 }

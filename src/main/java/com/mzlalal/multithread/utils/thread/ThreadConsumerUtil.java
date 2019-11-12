@@ -1,14 +1,11 @@
 package com.mzlalal.multithread.utils.thread;
 
-import com.mzlalal.multithread.dao.PersonDAO;
-import com.mzlalal.multithread.entity.Person;
 import com.mzlalal.multithread.factory.MzThreadFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.concurrent.*;
 
 /**
@@ -37,7 +34,6 @@ public class ThreadConsumerUtil {
                 60L, TimeUnit.SECONDS,
                 new SynchronousQueue<Runnable>(),
                 new MzThreadFactory());
-
 
         // 开启四个线程
         for (int j = 0; j < threadNumber; j++) {
@@ -70,29 +66,5 @@ public class ThreadConsumerUtil {
                 System.out.println(String.format("test1总耗时:%d", (endTime - startTime)));
             });
         }
-
-    }
-
-    /**
-     * 多线程测试
-     *
-     * @param personDAO
-     */
-    public void test2(List<String> uuidList, PersonDAO personDAO) {
-        // 开始时间
-        long startTime = System.currentTimeMillis();
-
-        for (String temp : uuidList) {
-            // 新增一个person对象 从uuidList中获取数据, atomic获取下标后立即执行
-            Person person = new Person();
-            person.setName(temp);
-            person.setC_name(Thread.currentThread().getName());
-            // 保存到数据库
-            personDAO.save(person);
-        }
-        // 结束时间
-        long endTime = System.currentTimeMillis();
-
-        System.out.println(String.format("test2总耗时:%d", (endTime - startTime)));
     }
 }
