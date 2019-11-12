@@ -63,7 +63,7 @@ public class ThreadConsumerUtil {
                 // 结束时间
                 long endTime = System.currentTimeMillis();
 
-                System.out.println(String.format("test1总耗时:%d", (endTime - startTime)));
+                System.out.println(String.format("%s消费总耗时:%d", Thread.currentThread().getName(), (endTime - startTime)));
             });
         }
     }
