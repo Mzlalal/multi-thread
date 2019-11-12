@@ -1,6 +1,7 @@
 package com.mzlalal.multithread.utils.thread;
 
 import com.mzlalal.multithread.factory.MzThreadFactory;
+import com.mzlalal.multithread.utils.common.SpringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -50,8 +51,7 @@ public class ThreadConsumerUtil {
                         e.printStackTrace();
                     }
                     try {
-                        ConsumerMethodsUtil consumerMethodsUtil = new ConsumerMethodsUtil();
-                        method.invoke(consumerMethodsUtil, parameters);
+                        method.invoke(SpringUtils.getBean(ConsumerMethodsUtil.class), parameters);
                     } catch (IllegalAccessException | InvocationTargetException e2) {
                         e2.printStackTrace();
                     }

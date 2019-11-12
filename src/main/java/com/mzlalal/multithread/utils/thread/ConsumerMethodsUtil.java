@@ -3,6 +3,7 @@ package com.mzlalal.multithread.utils.thread;
 import com.mzlalal.multithread.dao.PersonDAO;
 import com.mzlalal.multithread.entity.Person;
 import com.mzlalal.multithread.utils.common.SpringUtils;
+import org.apache.commons.lang3.ClassUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -13,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @description: 线程消费方法工具类
  * 最好不要命名重复或者重载
+ * 将需要定制化的方法卸载这里 通过反射在多线程中调用定制化方法
  * @author: Mzlalal
  * @date: 2019/11/12 17:15
  * @version: 1.0
@@ -44,6 +46,33 @@ public class ConsumerMethodsUtil {
                 break;
             }
         }
+        // 检测不能为空
+        Assert.notNull(invokeMethod, "多线程调用方法不能不为空!");
+        // 开始测试
+        threadConsumerUtil.consumer(size, invokeMethod, parameters);
+    }
+
+    /**
+     * 公共多线程调用方法
+     * 通过指定方法名,参数获取方法
+     *
+     * @param size 数组大小
+     * @param methodName 方法名称
+     * @param clszz 方法参数类型
+     * @param parameters 参数
+     */
+    public void invokeConsumerMethodByParameter(int size, String methodName, Class[] clszz, Object[] parameters) {
+        // 获取消费者
+        ThreadConsumerUtil threadConsumerUtil = SpringUtils.getBean(ThreadConsumerUtil.class);
+
+        // 获取调用方法
+        Method invokeMethod = null;
+        try {
+            invokeMethod = ClassUtils.getPublicMethod(ConsumerMethodsUtil.class, methodName, clszz);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
         // 检测不能为空
         Assert.notNull(invokeMethod, "多线程调用方法不能不为空!");
         // 开始测试
