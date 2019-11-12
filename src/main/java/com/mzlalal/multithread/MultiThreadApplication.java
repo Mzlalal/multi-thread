@@ -24,12 +24,12 @@ public class MultiThreadApplication {
             uuidList.add(UUID.randomUUID().toString());
         }
         // 根据参数查询方法
-        Class[] clszz = {List.class, AtomicInteger.class};
+//        Class[] clszz = {List.class, AtomicInteger.class};
 
         // 参数值
         Object[] parameters = {uuidList, new AtomicInteger(0)};
         // 开始测试
-        consumerMethodsUtil.invokeConsumerMethod(uuidList, "consumerUUIDList", clszz, parameters);
+        consumerMethodsUtil.invokeConsumerMethod(uuidList, "consumerUUIDList", parameters);
 //        consumerTestUtil.test2(uuidList, personDAO);
     }
 }
