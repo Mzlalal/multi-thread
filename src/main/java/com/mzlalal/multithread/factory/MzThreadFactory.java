@@ -34,9 +34,9 @@ public class MzThreadFactory implements ThreadFactory {
         SecurityManager s = System.getSecurityManager();
         group = (s != null) ? s.getThreadGroup() :
                 Thread.currentThread().getThreadGroup();
-        namePrefix = "Mz-" +
+        namePrefix = "Mz线程工厂-第" +
                 poolNumber.getAndIncrement() +
-                "-线程-";
+                "个线程池-线程编号:";
     }
 
     /**
