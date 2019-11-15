@@ -3,11 +3,8 @@ package com.mzlalal.multithread.utils.thread;
 import com.mzlalal.multithread.dao.PersonDAO;
 import com.mzlalal.multithread.entity.Person;
 import com.mzlalal.multithread.utils.common.SpringUtils;
-import org.apache.commons.lang3.ClassUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -23,69 +20,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ConsumerMethodsUtil {
 
     /**
-     * 公共多线程调用方法
-     *
-     * @param size 数组大小
-     * @param methodName 方法名称
-     * @param parameters 参数
-     */
-    public void invokeConsumerMethod(int size, String methodName, Object[] parameters) {
-        // 获取消费者
-        ThreadConsumerUtil threadConsumerUtil = SpringUtils.getBean(ThreadConsumerUtil.class);
-
-        // 获取所有方法
-        Method[] methods = ConsumerMethodsUtil.class.getDeclaredMethods();
-
-        // 获取调用方法
-        Method invokeMethod = null;
-        for (Method method : methods) {
-            // 判断方法名是否相等
-            if (method.getName().equals(methodName)) {
-                invokeMethod = method;
-                // 跳出当前循环
-                break;
-            }
-        }
-        // 检测不能为空
-        Assert.notNull(invokeMethod, "多线程调用方法不能不为空!");
-        // 开始测试
-        threadConsumerUtil.consumer(size, invokeMethod, parameters);
-    }
-
-    /**
-     * 公共多线程调用方法
-     * 通过指定方法名,参数获取方法
-     *
-     * @param size 数组大小
-     * @param methodName 方法名称
-     * @param clszz 方法参数类型
-     * @param parameters 参数
-     */
-    public void invokeConsumerMethodByParameter(int size, String methodName, Class[] clszz, Object[] parameters) {
-        // 获取消费者
-        ThreadConsumerUtil threadConsumerUtil = SpringUtils.getBean(ThreadConsumerUtil.class);
-
-        // 获取调用方法
-        Method invokeMethod = null;
-        try {
-            invokeMethod = ClassUtils.getPublicMethod(ConsumerMethodsUtil.class, methodName, clszz);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-
-        // 检测不能为空
-        Assert.notNull(invokeMethod, "多线程调用方法不能不为空!");
-        // 开始测试
-        threadConsumerUtil.consumer(size, invokeMethod, parameters);
-    }
-
-    /**
      * 调用UUID list 方法
      *
      * @param uuidList
      * @param atomicInt
      */
-    public void consumerUUIDList(List<String> uuidList, AtomicInteger atomicInt) {
+    public void consumerUuidList(List<String> uuidList, AtomicInteger atomicInt) {
         // 获取服务
         PersonDAO dao = SpringUtils.getBean(PersonDAO.class);
 
@@ -98,7 +38,6 @@ public class ConsumerMethodsUtil {
         // 保存到数据库
         dao.save(person);
     }
-
 
     /**
      * 单线程测试
